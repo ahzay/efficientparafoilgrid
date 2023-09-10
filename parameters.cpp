@@ -7,6 +7,5 @@
 Parameters::Parameters(double V, double dt, int depth, const std::deque<double> &us) :
         V(V), dt(dt), depth(depth),
         us(us) {
-    uperside = ((us.size() -
-                 1) / 2);
+    uperside = ((us.size() - 1) / 2);
 }

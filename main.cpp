@@ -10,7 +10,7 @@ deque<deque<State>> gen_grid(const Parameters &p, State &s_init) {
         cout << "at depth: " << ans.size() << endl;
         // preallocated
         deque<State> new_states(ans.back().size() * p.us.size(), s_init);
-#pragma omp parallel for
+//#pragma omp parallel for
         for (int i = 0; i < ans.back().size(); i++) {
             const auto &s = ans.back()[i];
             int u_count = 0;
@@ -33,16 +33,16 @@ int main(int argc, char *argv[]) {
     cout<<"one instance of State takes " << sizeof(State)<<endl;
     system("rm *png *gpt");
     Parameters p(o.V, o.dt, o.depth, o.us);
-    Attributes a(o.psi_init, 0, 0, 0, 0);
+    Attributes a(o.psi_init, 1e-20, 1e-20, 0, 0);
     State s(a, &p);
     auto grid = gen_grid(p, s);
     // add points
-    /*Visualizer v(0,"red");
+    Visualizer v(0,"red");
     for (const auto step: grid)
         for (const auto s: step)
             v.add_state(s);
     v.save();
     // render plots
-    system("parallel -j 24 gnuplot {} \">\" {.}.png ::: *.gpt");*/
+    system("parallel -j 24 gnuplot {} \">\" {.}.png ::: *.gpt");
     return 0;
 }
