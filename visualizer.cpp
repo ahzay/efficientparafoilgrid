@@ -8,7 +8,7 @@ using namespace std;
 
 Visualizer::Visualizer(int cnt, const string &color) {
     of.open(to_string(cnt) + ".gpt");
-    of << "set term pngcairo size 1000,1000 enhanced font \"Times,12\" "
+    of << "set term pngcairo size 5000,5000 enhanced font \"Times,12\" "
        << endl
        << "set multiplot"
        << endl

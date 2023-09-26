@@ -4,6 +4,7 @@
 
 #include "attributes.h"
 #include <complex>
+#include <float.h>
 
 std::pair<double, double>
 Attributes::fxfy(const Parameters &p, const double &psi_dd_f, const double &t_i, const double &t_f) const {
@@ -61,6 +62,13 @@ Attributes::fxfy(const Parameters &p, const double &psi_dd_f, const double &t_i,
     return std::make_pair(out1_fx.real(), out1_fy.real());
 }
 
+std::pair<double, double> // for psi_dd = 0 cases
+Attributes::fxfy2(const Parameters &p, const double &psi_dd_f, const double &t_i, const double &t_f) const {
+    double out1_fx = x_i + (p.V * (sin(psi_i + psi_d_i * (t_f - t_i)) - sin(psi_i))) / psi_d_i;
+    double out1_fy = y_i - (p.V * (cos(psi_i + psi_d_i * (t_f - t_i)) - cos(psi_i))) / psi_d_i;
+    return std::make_pair(out1_fx, out1_fy);
+}
+
 double Attributes::fpsi(const double &psi_dd_f, const double &t_i, const double &t_f) const {
     double t2 = -t_i;
     double out1 = psi_i + ((t_f + t2) * (psi_d_i * 2.0 + psi_dd_f * t_f + psi_dd_f * t2)) / 2.0;
@@ -84,7 +92,10 @@ Attributes::Attributes(double psi_i, double psi_d_i, double psi_dd_i, double x_i
 Attributes
 Attributes::gen_next_attributes(const Parameters &p, const double &u, const double &t_i, const double &t_f) const {
     double psi_dd_f = psi_dd_i + u;
-    const auto xy = fxfy(p, psi_dd_f, t_i, t_f);
+    std::pair<double, double>  xy;
+    if (psi_dd_f != 0)
+        xy =fxfy(p, psi_dd_f, t_i, t_f);
+    else xy =fxfy2(p, psi_dd_f, t_i, t_f);
     return {fpsi(psi_dd_f, t_i, t_f), fpsi_d(psi_dd_f, t_i, t_f),
             psi_dd_f, xy.first, xy.second};
 }

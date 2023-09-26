@@ -28,6 +28,8 @@ private:
     std::pair<double, double>
     fxfy(const Parameters &p, const double &psi_dd_f, const double &t_i, const double &t_f) const;
 
+    std::pair<double, double>
+    fxfy2(const Parameters &p, const double &psi_dd_f, const double &t_i, const double &t_f) const;
     double fpsi(const double &psi_dd_f, const double &t_i, const double &t_f) const;
 
     double fpsi_d(const double &psi_dd_f, const double &t_i, const double &t_f) const;
